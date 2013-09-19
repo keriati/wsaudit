@@ -1,0 +1,148 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>Web Service Auditor</title>
+
+    <meta name="viewport" content="width=device-width">
+
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+</head>
+<body>
+
+
+<script type="text/x-template" id="tpl-panel">
+    <div id="panel">
+        <div id="sqc">
+            <% _.each(queries, function(q) { %>
+            <div class="">
+                <div class="sq-name"><%= q.name %></div>
+                <div class="sq-link"><span><%= q.url %></span></div>
+                <div class="sq-control">
+                    <button>Open</button>
+                    <button>Delete</button>
+                    <button>Duplicate</button>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+
+        <div id="sqc-control">
+            <button id="ctrl-add_query">Add</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="tpl-querypanel">
+    <div id="querypanel">
+        <div>
+            <label>HTTP Method</label>
+            <select class="method">
+                <option value="get" selected=selected>GET</option>
+                <option value="post">POST</option>
+                <option value="put">PUT</option>
+                <option value="delete">DELETE</option>
+                <option value="patch">PATCH</option>
+                <option value="OPTIONS">OPTIONS</option>
+                <option value="head">HEAD</option>
+            </select>
+        </div>
+
+        <div>
+            <label>URL</label>
+            <input type="text" class="url"/>
+
+            <label>Data Type</label>
+            <select class="datatype">
+                <option value="text" selected=selected>TEXT</option>
+                <option value="json">JSON</option>
+                <option value="jsonp">JSONP</option>
+                <option value="html">HTML</option>
+                <option value="script">SCRIPT</option>
+                <option value="xml">XML</option>
+            </select>
+        </div>
+
+        <hr />
+
+        <div>
+            <p>Headers</p>
+            <div>
+                <label for="hkey">Key</label>
+                <input type="text" id="hkey"/>
+                <label for="hvalue">Value</label>
+                <input type="text" id="hvalue"/>
+                <button id="add-header">Add</button>
+            </div>
+            <ul id="headers"></ul>
+        </div>
+
+        <hr />
+
+        <div>
+            <p>
+                Request Data
+                <select id="data-process">
+                    <option value="true" selected="selected">Processed Data</option>
+                    <option value="false">Unprocessed Data</option>
+                </select>
+            </p>
+            <div id="data-cont">
+                <label for="hkey">Key</label>
+                <input type="text" id="dkey"/>
+                <label for="hvalue">Value</label>
+                <input type="text" id="dvalue"/>
+                <button id="add-data">Add</button>
+
+                <ul id="data"></ul>
+            </div>
+
+            <div id="rawdata-cont" style="display: none">
+                <textarea class="rawdata"></textarea>
+            </div>
+        </div>
+
+        <hr />
+
+        <button id="start">Start</button>
+
+        <hr />
+
+        <input type="text" class="savename" /> <button id="ctrl-save_query">Save</button>
+
+        <hr />
+
+        <p>Response Headers</p>
+        <div>
+            <code>
+            <pre id="output-headers">
+
+            </pre>
+            </code>
+        </div>
+
+        <p>Output data</p>
+        <div>
+            <code>
+            <pre  id="output-data" class="prettyprint linenums lang-js">
+
+            </pre>
+            </code>
+        </div>
+    </div>
+</script>
+
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/jquery.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js scripts/main.js -->
+<script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>
+<!-- endbuild -->
+
+</body>
+</html>

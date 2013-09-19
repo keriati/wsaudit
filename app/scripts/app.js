@@ -1,0 +1,17 @@
+define(['views/panel'], function (Panel) {
+    'use strict';
+
+    function WSAudit() {
+        this.initialize();
+    }
+
+    WSAudit.prototype = {
+        initialize: function() {
+            this.panel = new Panel();
+
+            this.panel.render().$el.appendTo('body');
+        }
+    };
+
+    return WSAudit;
+});
