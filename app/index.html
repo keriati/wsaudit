@@ -12,9 +12,13 @@
 </head>
 <body>
 
+<div id="content"></div>
 
 <script type="text/x-template" id="tpl-panel">
-    <div class="panel">
+    <div class="panel drag-handle">
+
+        <div class="panel-header">Queries</div>
+
         <div class="ql">
             <% _.each(queries, function(q) { %>
             <div class="ql-item ql-item-<%=q.id%>" data-qid="<%= q.id %>">
@@ -36,110 +40,128 @@
 
 <script type="text/x-template" id="tpl-querypanel">
     <div class="querypanel">
-        <div>
-            <button class="ctrl-close" style="float: right;">Close</button>
+        <div class="qp-header drag-handle">
+            <%print(q.name || "New Query")%>
         </div>
-
-        <div>
-            <label>HTTP Method</label>
-            <select class="method">
-                <% _.each(methods, function(method) { %>
-
-                <option value="<%=method%>" <% print((q.method === method) ? 'selected=selected' : ''); %>><%=method.toUpperCase()%></option>
-
-                <% }); %>
-            </select>
-        </div>
-
-        <div>
-            <label>URL</label>
-            <input type="text" class="url" value="<%= q.url %>"/>
-
-            <label>Data Type</label>
-            <select class="datatype">
-                <% _.each(datatypes, function(datatype) { %>
-
-                <option value="<%=datatype%>"><%=datatype.toUpperCase()%></option>
-
-                <% }); %>
-            </select>
-        </div>
-
-        <hr />
-
-        <div>
-            <p>Headers</p>
+        <div class="qp-content">
             <div>
-                <label>Key</label>
-                <input type="text" class="hkey"/>
-
-                <label>Value</label>
-                <input type="text" class="hvalue"/>
-
-                <button class="ctrl-add_header">Add</button>
+                <button class="ctrl-close" style="float: right;">Close</button>
+                <label>Url:
+                    <input type="text" class="url" value="<%= q.url %>" placeholder="http://www.example.url/some.jsonp"/>
+                </label>
             </div>
-            <ul class="headers"></ul>
-        </div>
 
-        <hr />
+            <div>
+                <label>Method</label>
+                <select class="method">
+                    <% _.each(methods, function(method) { %>
 
-        <div>
-            <p>
-                Request Data
-                <select class="data-process">
-                    <option value="true" selected="selected">Processed Data</option>
-                    <option value="false">Unprocessed Data</option>
+                    <option value="<%=method%>" <% print((q.method === method) ? 'selected=selected' : ''); %>><%=method.toUpperCase()%></option>
+
+                    <% }); %>
                 </select>
-            </p>
-            <div class="data-cont">
-                <label>Key</label>
-                <input type="text" class="dkey"/>
 
-                <label>Value</label>
-                <input type="text" class="dvalue"/>
+                <label>Data Type</label>
+                <select class="datatype">
+                    <% _.each(datatypes, function(datatype) { %>
 
-                <button class="ctrl-add_data">Add</button>
+                    <option value="<%=datatype%>" <% print((q.datatype === datatype) ? 'selected=selected' : ''); %>><%=datatype.toUpperCase()%></option>
 
-                <ul class="data"></ul>
+                    <% }); %>
+                </select>
             </div>
 
-            <div class="rawdata-cont" style="display: none">
-                <textarea class="rawdata"></textarea>
+
+
+            <hr />
+
+            <div>
+                <p>Extra headers <button class="ctrl-add_header">+</button></p>
+                <ul class="header-list">
+                    <% _.each(q.headers, function(header) { %>
+
+                    <li class="keyvaluepair header-pair">
+                        <input type="text" class="header-key" value="<%=header.key%>"/>
+                        <input type="text" class="header-value" value="<%=header.value%>"/>
+                        <button class="ctrl-removepair">Remove</button>
+                    </li>
+
+                    <% }) %>
+                </ul>
+
             </div>
-        </div>
 
-        <hr />
+            <hr />
 
-        <button class="ctrl-start">Start</button>
+            <div>
+                <p>
+                    Request Data <button class="ctrl-add_data">+</button>
+                    <select class="processdata">
+                        <option value="true" <% print((q.processdata) ? 'selected=selected' : '');%>>Processed Data</option>
+                        <option value="false" <% print((!q.processdata) ? 'selected=selected' : '');%>>Unprocessed Data</option>
+                    </select>
+                </p>
+                <div class="data-cont">
+                    <ul class="data-list">
+                        <% _.each(q.data, function(data) { %>
 
-        <hr />
+                        <li class="keyvaluepair data-pair">
+                            <input type="text" class="data-key" value="<%=data.key%>"/>
+                            <input type="text" class="data-value" value="<%=data.value%>"/>
+                            <button class="ctrl-removepair">Remove</button>
+                        </li>
 
-        <%
-        <input type="text" class="savename" /> <button class="ctrl-save_query">Save</button>
+                        <% }) %>
+                    </ul>
+                </div>
+                <div class="rawdata-cont" style="display: none">
+                    <textarea class="rawdata"><%=q.rawdata%></textarea>
+                </div>
+            </div>
 
-        <hr />
+            <hr />
 
-        <p>Response Headers</p>
-        <div>
-            <code>
-                <pre class="output-headers"></pre>
-            </code>
-        </div>
+            <button class="ctrl-start">Start</button>
 
-        <p>Output data</p>
-        <div>
-            <code>
-                <pre  class="output-data" class="prettyprint linenums lang-js"></pre>
-            </code>
+            <hr />
+
+            <% if(q.name === "") { %>
+                <input type="text" class="savename" />
+            <% } %>
+
+            <button class="ctrl-save_query">Save</button>
+
+            <% if(q.name !== "") { %>
+                <button class="ctrl-saveas_query">Save As</button>
+                <button class="ctrl-remove_query">Remove</button>
+            <% } %>
+
+            <hr />
+
+            <p>Response Headers</p>
+            <div>
+                <code>
+                    <pre class="output-headers"></pre>
+                </code>
+            </div>
+
+            <p>Output data</p>
+            <div>
+                <code>
+                    <pre  class="output-data" class="prettyprint linenums lang-js"></pre>
+                </code>
+            </div>
         </div>
     </div>
 </script>
 
-<!-- build:js scripts/vendor.js -->
-<!-- bower:js -->
-<script src="bower_components/jquery/jquery.js"></script>
-<!-- endbower -->
-<!-- endbuild -->
+<script type="text/x-template" id="tpl-keyvaluepair">
+    <li class="keyvaluepair <%=type%>-pair">
+        <input type="text" class="<%=type%>-key" value="<%=key%>"/>
+        <input type="text" class="<%=type%>-value" value="<%=value%>"/>
+        <button class="ctrl-removepair">Remove</button>
+    </li>
+</script>
 
 <!-- build:js scripts/main.js -->
 <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>

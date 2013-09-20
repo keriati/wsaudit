@@ -9,7 +9,7 @@ define(['views/panel'], function (Panel) {
         initialize: function() {
             this.panel = new Panel();
 
-            this.panel.render().$el.appendTo('body');
+            this.panel.render().$el.appendTo('#content');
         }
     };
 

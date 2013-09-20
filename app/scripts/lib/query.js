@@ -1,17 +1,20 @@
 define(['jquery', 'underscore'], function ($, _) {
+    'use strict';
+
     function Query(data) {
         this._attributes = {
             id: null,
 
-            name: '',
-            method: '',
-            url: '',
+            name:     '',
+            method:   '',
+            url:      '',
             datatype: '',
+            rawdata:  '',
 
             headers: [],
-            data: [],
+            data:    [],
 
-            rawdata: ''
+            processdata: true
         };
 
         if(_.isObject(data)) {

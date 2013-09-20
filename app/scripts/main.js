@@ -2,12 +2,14 @@ require.config({
     shim: {
         underscore: {
             exports: '_'
-        }
+        },
+        draggable: ['jquery']
     },
 
     paths: {
         jquery: '../bower_components/jquery/jquery',
-        underscore: '../bower_components/underscore/underscore'
+        underscore: '../bower_components/underscore/underscore',
+        draggable: '../../vendor/jquery-ui-1.10.3.custom'
     }
 });
 

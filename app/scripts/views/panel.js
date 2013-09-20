@@ -1,9 +1,8 @@
-/*global define */
-define(['jquery', 'underscore', 'lib/storage', 'views/query'], function ($, _, Storage, QueryPanel) {
+define(['jquery', 'underscore', 'lib/storage', 'views/query', 'draggable'], function ($, _, Storage, QueryPanel) {
     'use strict';
 
     function Panel(data) {
-        this.$el = $('<div></div>');
+        this.$el = $('<div class="drag"></div>');
 
         _.extend(this, data);
 
@@ -16,6 +15,8 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query'], function ($, _, S
 
         initialize: function() {
             this.storage = new Storage();
+
+            this.$el.draggable({stack: '.drag', handle: '.drag-handle'});
         },
 
         render: function() {
@@ -50,7 +51,7 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query'], function ($, _, S
         newQuery: function() {
             var qp = new QueryPanel(null, {panel: this});
 
-            qp.render().$el.appendTo('body');
+            qp.render().$el.appendTo('#content');
         },
 
         removeQuery: function(id) {
