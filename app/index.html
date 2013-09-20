@@ -17,7 +17,7 @@
 <script type="text/x-template" id="tpl-panel">
     <div class="panel drag-handle">
 
-        <div class="panel-header">Queries</div>
+        <div class="panel-header clearfix" style="width: 100%;">Queries <button class="ctrl-add_query" style="float: right;">New</button></div>
 
         <div class="ql">
             <% _.each(queries, function(q) { %>
@@ -26,14 +26,14 @@
                 <div class="q-url"><span><%= q.url %></span></div>
                 <div class="q-control">
                     <button class="ctrl-open_query">Open</button>
-                    <button class="ctrl-remove_query">Delete</button>
+                    <button class="ctrl-remove_query">Remove</button>
                 </div>
             </div>
             <% }); %>
         </div>
 
-        <div class="ql-control">
-            <button class="ctrl-add_query">New</button>
+        <div class="ql-control download">
+
         </div>
     </div>
 </script>
@@ -41,11 +41,12 @@
 <script type="text/x-template" id="tpl-querypanel">
     <div class="querypanel">
         <div class="qp-header drag-handle">
+            <button class="ctrl-close" style="float: right;">Close</button>
             <%print(q.name || "New Query")%>
+            <div style="clear:both;"></div>
         </div>
         <div class="qp-content">
             <div>
-                <button class="ctrl-close" style="float: right;">Close</button>
                 <label>Url:
                     <input type="text" class="url" value="<%= q.url %>" placeholder="http://www.example.url/some.jsonp"/>
                 </label>
@@ -71,72 +72,72 @@
                 </select>
             </div>
 
+            <div class="clearfix list-container">
 
+                <div class="headers-container">
+                    <p>Extra headers <button class="ctrl-add_header">+</button></p>
+                    <table class="header-list">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% _.each(q.headers, function(header) { %>
 
-            <hr />
+                            <tr class="keyvaluepair header-pair">
+                                <td><input type="text" class="header-key" value="<%=header.key%>"/></td>
+                                <td><input type="text" class="header-value" value="<%=header.value%>"/></td>
+                                <td><button class="ctrl-removepair">-</button></td>
+                            </tr>
 
-            <div>
-                <p>Extra headers <button class="ctrl-add_header">+</button></p>
-                <ul class="header-list">
-                    <% _.each(q.headers, function(header) { %>
+                            <% }) %>
+                        </tbody>
+                    </table>
 
-                    <li class="keyvaluepair header-pair">
-                        <input type="text" class="header-key" value="<%=header.key%>"/>
-                        <input type="text" class="header-value" value="<%=header.value%>"/>
-                        <button class="ctrl-removepair">Remove</button>
-                    </li>
+                </div>
 
-                    <% }) %>
-                </ul>
+                <div class="data-container">
+                    <p>
+                        Request Data <button class="ctrl-add_data">+</button>
+                        <select class="processdata">
+                            <option value="true" <% print((q.processdata) ? 'selected=selected' : '');%>>Processed Data</option>
+                            <option value="false" <% print((!q.processdata) ? 'selected=selected' : '');%>>Unprocessed Data</option>
+                        </select>
+                    </p>
+                    <div class="data-cont">
+                        <table class="data-list">
+                            <thead>
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% _.each(q.data, function(data) { %>
+
+                                <tr class="keyvaluepair data-pair">
+                                    <td><input type="text" class="data-key" value="<%=data.key%>"/></td>
+                                    <td><input type="text" class="data-value" value="<%=data.value%>"/></td>
+                                    <td><button class="ctrl-removepair">-</button></td>
+                                </td>
+
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="rawdata-cont" style="display: none">
+                        <textarea class="rawdata"><%=q.rawdata%></textarea>
+                    </div>
+                </div>
 
             </div>
-
-            <hr />
-
-            <div>
-                <p>
-                    Request Data <button class="ctrl-add_data">+</button>
-                    <select class="processdata">
-                        <option value="true" <% print((q.processdata) ? 'selected=selected' : '');%>>Processed Data</option>
-                        <option value="false" <% print((!q.processdata) ? 'selected=selected' : '');%>>Unprocessed Data</option>
-                    </select>
-                </p>
-                <div class="data-cont">
-                    <ul class="data-list">
-                        <% _.each(q.data, function(data) { %>
-
-                        <li class="keyvaluepair data-pair">
-                            <input type="text" class="data-key" value="<%=data.key%>"/>
-                            <input type="text" class="data-value" value="<%=data.value%>"/>
-                            <button class="ctrl-removepair">Remove</button>
-                        </li>
-
-                        <% }) %>
-                    </ul>
-                </div>
-                <div class="rawdata-cont" style="display: none">
-                    <textarea class="rawdata"><%=q.rawdata%></textarea>
-                </div>
-            </div>
-
-            <hr />
 
             <button class="ctrl-start">Start</button>
-
-            <hr />
-
-            <% if(q.name === "") { %>
-                <input type="text" class="savename" />
-            <% } %>
-
-            <button class="ctrl-save_query">Save</button>
-
-            <% if(q.name !== "") { %>
-                <button class="ctrl-saveas_query">Save As</button>
-                <button class="ctrl-remove_query">Remove</button>
-            <% } %>
-
-            <hr />
 
             <p>Response Headers</p>
             <div>
@@ -151,16 +152,28 @@
                     <pre  class="output-data" class="prettyprint linenums lang-js"></pre>
                 </code>
             </div>
+
+            <% if(q.name === "") { %>
+            <input type="text" class="savename" />
+            <% } %>
+
+            <button class="ctrl-save_query">Save</button>
+
+            <% if(q.name !== "") { %>
+            <button class="ctrl-saveas_query">Save As</button>
+            <button class="ctrl-remove_query">Remove</button>
+            <% } %>
+
         </div>
     </div>
 </script>
 
 <script type="text/x-template" id="tpl-keyvaluepair">
-    <li class="keyvaluepair <%=type%>-pair">
-        <input type="text" class="<%=type%>-key" value="<%=key%>"/>
-        <input type="text" class="<%=type%>-value" value="<%=value%>"/>
-        <button class="ctrl-removepair">Remove</button>
-    </li>
+    <tr class="keyvaluepair <%=type%>-pair">
+        <td><input type="text" class="<%=type%>-key" value="<%=key%>"/></td>
+        <td><input type="text" class="<%=type%>-value" value="<%=value%>"/></td>
+        <td><button class="ctrl-removepair">-</button></td>
+    </tr>
 </script>
 
 <!-- build:js scripts/main.js -->

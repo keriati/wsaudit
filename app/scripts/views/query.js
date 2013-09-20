@@ -58,10 +58,10 @@ define(['jquery', 'underscore', 'lib/query', 'lib/storage', 'lib/runner', 'dragg
             });
 
             this.$el.on('click', '.ctrl-removepair', function() {
-                $(this).parent().remove();
+                $(this).parent().parent().remove();
             });
 
-            this.$el.on('change', '.data-process', function() {
+            this.$el.on('change', '.processdata', function() {
                 if($(this).val() === 'true') {
                     that.$el.find('.data-cont').show();
                     that.$el.find('.rawdata-cont').hide();

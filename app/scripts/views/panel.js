@@ -30,6 +30,8 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query', 'draggable'], func
 
             this.$el.html(this.template({queries: rawqueries}));
 
+            this.generateDownload();
+
             return this;
         },
 
@@ -66,6 +68,14 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query', 'draggable'], func
             var qp = new QueryPanel(q, {panel: this});
 
             qp.render().$el.appendTo('body');
+        },
+
+        generateDownload: function() {
+            var data = JSON.stringify(this.storage.getAll(), null, "  ");
+            var blob = new Blob([data], {type: "application/json"});
+            var url  = URL.createObjectURL(blob);
+
+            this.$el.find('.download').html($('<a href="' + url + '" download="wsa-settings.json">Download</a>'));
         }
     };
 

@@ -13,6 +13,10 @@ body {
     position: relative;
 }
 
+table {
+    max-width: 100%;
+}
+
 /**
  * Forms
  */
@@ -104,14 +108,50 @@ input.url {
     background-color: #999;
 }
 
+.headers-container, .data-container {
+    width: 49.8%;
+    border: 1px solid #999;
+}
+
+.headers-container {
+    float: left;
+}
+.data-container {
+    float: right;
+}
+.list-container {
+    width: 100%;
+}
 .output-headers {
     white-space: normal;
+    overflow: scroll;
+    background-color: #777;
+    height: 120px;
 }
 
 .output-data {
     overflow: scroll;
     background-color: #777;
-    height: 200px;
+    height: 240px;
+}
+
+.data-list,
+.header-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.data-list li,
+.header-list li {
+    display: block;
+}
+.data-list input,
+.header-list input {
+    display: block;
+    border: none;
+    border-radius: 0;
+    max-width: 100%;
 }
 
 /*! jQuery UI - v1.10.3 - 2013-09-20
@@ -202,3 +242,23 @@ input.url {
     height: 100%;
 }
 
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}
