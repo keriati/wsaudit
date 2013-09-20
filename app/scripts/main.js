@@ -16,4 +16,6 @@ require(['app'], function (WSAudit) {
 
     var myWSAudit = new WSAudit();
 
+    $('.ctrl-add_query').trigger('click');
+
 });

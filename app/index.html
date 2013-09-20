@@ -35,13 +35,17 @@
 </script>
 
 <script type="text/x-template" id="tpl-querypanel">
-    <div id="querypanel">
+    <div class="querypanel">
+        <div>
+            <button class="ctrl-close" style="float: right;">Close</button>
+        </div>
+
         <div>
             <label>HTTP Method</label>
             <select class="method">
                 <% _.each(methods, function(method) { %>
 
-                <option value="<%=method%>" <% print((q.method === method) ? 'selected=selected' : ''); %>><%=method%></option>
+                <option value="<%=method%>" <% print((q.method === method) ? 'selected=selected' : ''); %>><%=method.toUpperCase()%></option>
 
                 <% }); %>
             </select>
@@ -49,16 +53,15 @@
 
         <div>
             <label>URL</label>
-            <input type="text" class="url"/>
+            <input type="text" class="url" value="<%= q.url %>"/>
 
             <label>Data Type</label>
             <select class="datatype">
-                <option value="text" selected=selected>TEXT</option>
-                <option value="json">JSON</option>
-                <option value="jsonp">JSONP</option>
-                <option value="html">HTML</option>
-                <option value="script">SCRIPT</option>
-                <option value="xml">XML</option>
+                <% _.each(datatypes, function(datatype) { %>
+
+                <option value="<%=datatype%>"><%=datatype.toUpperCase()%></option>
+
+                <% }); %>
             </select>
         </div>
 
@@ -67,13 +70,15 @@
         <div>
             <p>Headers</p>
             <div>
-                <label for="hkey">Key</label>
-                <input type="text" id="hkey"/>
-                <label for="hvalue">Value</label>
-                <input type="text" id="hvalue"/>
-                <button id="add-header">Add</button>
+                <label>Key</label>
+                <input type="text" class="hkey"/>
+
+                <label>Value</label>
+                <input type="text" class="hvalue"/>
+
+                <button class="ctrl-add_header">Add</button>
             </div>
-            <ul id="headers"></ul>
+            <ul class="headers"></ul>
         </div>
 
         <hr />
@@ -81,51 +86,50 @@
         <div>
             <p>
                 Request Data
-                <select id="data-process">
+                <select class="data-process">
                     <option value="true" selected="selected">Processed Data</option>
                     <option value="false">Unprocessed Data</option>
                 </select>
             </p>
-            <div id="data-cont">
-                <label for="hkey">Key</label>
-                <input type="text" id="dkey"/>
-                <label for="hvalue">Value</label>
-                <input type="text" id="dvalue"/>
-                <button id="add-data">Add</button>
+            <div class="data-cont">
+                <label>Key</label>
+                <input type="text" class="dkey"/>
 
-                <ul id="data"></ul>
+                <label>Value</label>
+                <input type="text" class="dvalue"/>
+
+                <button class="ctrl-add_data">Add</button>
+
+                <ul class="data"></ul>
             </div>
 
-            <div id="rawdata-cont" style="display: none">
+            <div class="rawdata-cont" style="display: none">
                 <textarea class="rawdata"></textarea>
             </div>
         </div>
 
         <hr />
 
-        <button id="start">Start</button>
+        <button class="ctrl-start">Start</button>
 
         <hr />
 
-        <input type="text" class="savename" /> <button id="ctrl-save_query">Save</button>
+        <%
+        <input type="text" class="savename" /> <button class="ctrl-save_query">Save</button>
 
         <hr />
 
         <p>Response Headers</p>
         <div>
             <code>
-            <pre id="output-headers">
-
-            </pre>
+                <pre class="output-headers"></pre>
             </code>
         </div>
 
         <p>Output data</p>
         <div>
             <code>
-            <pre  id="output-data" class="prettyprint linenums lang-js">
-
-            </pre>
+                <pre  class="output-data" class="prettyprint linenums lang-js"></pre>
             </code>
         </div>
     </div>

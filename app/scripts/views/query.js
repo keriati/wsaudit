@@ -23,16 +23,30 @@ define(['jquery', 'underscore', 'lib/query', 'lib/storage'], function($, _, Quer
         },
 
         render: function() {
-            var methods = ['get', 'post','put','delete','patch','options','head'];
-            this.$el.html(this.template({methods: methods, q: this.query.toJSON()}));
+            var methods = ['get', 'post','put','delete','patch','options','head'],
+                datatypes = ['text', 'json', 'jsonp', 'html', 'script', 'xml'],
+                data;
+
+            data = {
+                methods: methods,
+                datatypes: datatypes,
+                q: this.query.toJSON()
+            };
+
+            console.log('data', data)
+
+            this.$el.html(this.template(data));
 
             return this;
         },
 
         events: function() {
             var that = this;
-            this.$el.on('click', '#ctrl-save_query', function(){
+            this.$el.on('click', '.ctrl-save_query', function(){
                 that.saveQuery();
+            });
+            this.$el.on('click', '.ctrl-close', function(){
+                that.close();
             });
         },
 
