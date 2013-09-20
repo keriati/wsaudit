@@ -14,23 +14,22 @@
 
 
 <script type="text/x-template" id="tpl-panel">
-    <div id="panel">
-        <div id="sqc">
+    <div class="panel">
+        <div class="ql">
             <% _.each(queries, function(q) { %>
-            <div class="">
-                <div class="sq-name"><%= q.name %></div>
-                <div class="sq-link"><span><%= q.url %></span></div>
-                <div class="sq-control">
-                    <button>Open</button>
-                    <button>Delete</button>
-                    <button>Duplicate</button>
+            <div class="ql-item ql-item-<%=q.id%>" data-qid="<%= q.id %>">
+                <div class="q-name"><%= q.name %></div>
+                <div class="q-url"><span><%= q.url %></span></div>
+                <div class="q-control">
+                    <button class="ctrl-open_query">Open</button>
+                    <button class="ctrl-remove_query">Delete</button>
                 </div>
             </div>
             <% }); %>
         </div>
 
-        <div id="sqc-control">
-            <button id="ctrl-add_query">Add</button>
+        <div class="ql-control">
+            <button class="ctrl-add_query">New</button>
         </div>
     </div>
 </script>
@@ -40,13 +39,11 @@
         <div>
             <label>HTTP Method</label>
             <select class="method">
-                <option value="get" selected=selected>GET</option>
-                <option value="post">POST</option>
-                <option value="put">PUT</option>
-                <option value="delete">DELETE</option>
-                <option value="patch">PATCH</option>
-                <option value="OPTIONS">OPTIONS</option>
-                <option value="head">HEAD</option>
+                <% _.each(methods, function(method) { %>
+
+                <option value="<%=method%>" <% print((q.method === method) ? 'selected=selected' : ''); %>><%=method%></option>
+
+                <% }); %>
             </select>
         </div>
 

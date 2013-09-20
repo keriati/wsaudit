@@ -1,9 +1,11 @@
 define(['jquery', 'underscore', 'lib/query', 'lib/storage'], function($, _, Query, Storage) {
     'use strict';
 
-    function QueryPanel(query) {
+    function QueryPanel(query, options) {
         this.$el = $('<div></div>');
         this.$ = this.$el.find;
+
+        this.options = _.extend({}, options);
 
         this.events();
         this.initialize(query);
@@ -21,7 +23,8 @@ define(['jquery', 'underscore', 'lib/query', 'lib/storage'], function($, _, Quer
         },
 
         render: function() {
-            this.$el.html(this.template({q: this.query.toJSON()}));
+            var methods = ['get', 'post','put','delete','patch','options','head'];
+            this.$el.html(this.template({methods: methods, q: this.query.toJSON()}));
 
             return this;
         },
@@ -45,7 +48,13 @@ define(['jquery', 'underscore', 'lib/query', 'lib/storage'], function($, _, Quer
             var myStorage = new Storage();
 
 
-            console.log(myStorage.save(myQuery));
+            myStorage.save(myQuery);
+
+            this.options.panel.render();
+        },
+
+        close: function() {
+            this.$el.remove();
         }
     };
 

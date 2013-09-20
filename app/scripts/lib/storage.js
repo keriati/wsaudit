@@ -61,7 +61,7 @@ define(['underscore', 'lib/query'], function (_, Query) {
                 deleted;
 
             var filtered = _.filter(rawqueries, function(data) {
-                if(data.id !== id) {
+                if(data.id === id) {
                     deleted = data;
                     return false;
                 }

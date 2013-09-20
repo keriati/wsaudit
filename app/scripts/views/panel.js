@@ -16,10 +16,11 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query'], function ($, _, S
 
         initialize: function() {
             this.storage = new Storage();
-            this.queries = this.storage.getAll();
         },
 
         render: function() {
+            this.queries = this.storage.getAll();
+
             var rawqueries = [];
 
             _.each(this.queries, function(query) {
@@ -33,15 +34,37 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query'], function ($, _, S
 
         events: function() {
             var that = this;
-            this.$el.on('click', '#ctrl-add_query', function() {
+            this.$el.on('click', '.ctrl-add_query', function() {
                 that.newQuery();
+            });
+
+            this.$el.on('click', '.ctrl-remove_query', function(e) {
+                that.removeQuery(parseInt($(e.target).parent().parent().attr('data-qid'), 10));
+            });
+
+            this.$el.on('click', '.ctrl-open_query', function(e) {
+                that.openQuery(parseInt($(e.target).parent().parent().attr('data-qid'), 10));
             });
         },
 
         newQuery: function() {
-            var q = new QueryPanel();
+            var qp = new QueryPanel(null, {panel: this});
 
-            q.render().$el.appendTo('body');
+            qp.render().$el.appendTo('body');
+        },
+
+        removeQuery: function(id) {
+            if(window.confirm('Do you really want to remove this Query?')) {
+                this.storage.remove(id);
+                this.$el.find('.ql-item-' + id).remove();
+            }
+        },
+
+        openQuery: function(id) {
+            var q = this.storage.get(id);
+            var qp = new QueryPanel(q, {panel: this});
+
+            qp.render().$el.appendTo('body');
         }
     };
 
