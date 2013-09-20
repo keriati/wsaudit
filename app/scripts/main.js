@@ -9,7 +9,7 @@ require.config({
     paths: {
         jquery: '../bower_components/jquery/jquery',
         underscore: '../bower_components/underscore/underscore',
-        draggable: '../../vendor/jquery-ui-1.10.3.custom'
+        draggable: '../vendor/jquery-ui-1.10.3.custom'
     }
 });
 
@@ -19,5 +19,4 @@ require(['app'], function (WSAudit) {
     var myWSAudit = new WSAudit();
 
     $('.ctrl-add_query').trigger('click');
-
 });

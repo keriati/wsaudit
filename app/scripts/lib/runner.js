@@ -17,7 +17,6 @@ define(['jquery', 'underscore'], function ($, _) {
                 dataType: this.query.get('datatype')
             };
 
-
             if(this.query.get('processdata')) {
                 this.req.data = this.query.get('data');
                 this.req.processData = true;
@@ -25,6 +24,10 @@ define(['jquery', 'underscore'], function ($, _) {
                 this.req.data = this.query.get('rawdata');
                 this.req.processData = false;
                 this.req.contentType = 'application/json';
+            }
+
+            if(this.req.method === 'head' || this.req.method === 'get') {
+                this.req.cache = false;
             }
 
             return $.ajax(this.req);

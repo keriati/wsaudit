@@ -71,11 +71,13 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query', 'draggable'], func
         },
 
         generateDownload: function() {
-            var data = JSON.stringify(this.storage.getAll(), null, "  ");
-            var blob = new Blob([data], {type: "application/json"});
-            var url  = URL.createObjectURL(blob);
+            if(window.URL) {
+                var data = JSON.stringify(this.storage.getAll(), null, "  ");
+                var blob = new Blob([data], {type: "application/json"});
+                var url  = URL.createObjectURL(blob);
 
-            this.$el.find('.download').html($('<a href="' + url + '" download="wsa-settings.json">Download</a>'));
+                this.$el.find('.download').html($('<a href="' + url + '" download="wsa-settings.json">Download</a>'));
+            }
         }
     };
 
