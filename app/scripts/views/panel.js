@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'lib/storage', 'views/query', 'draggable'], function ($, _, Storage, QueryPanel) {
+define(['jquery', 'underscore', 'text!tpl/panel.html', 'lib/storage', 'views/query', 'draggable'], function ($, _, tpl, Storage, QueryPanel) {
     'use strict';
 
     function Panel(data) {
@@ -11,7 +11,7 @@ define(['jquery', 'underscore', 'lib/storage', 'views/query', 'draggable'], func
     }
 
     Panel.prototype = {
-        template : _.template($.trim($('#tpl-panel').html())),
+        template : _.template(tpl),
 
         initialize: function() {
             this.storage = new Storage();

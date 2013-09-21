@@ -1,0 +1,21 @@
+<div class="panel">
+
+    <div class="panel-header clearfix drag-handle" style="width: 100%;">Queries <button class="ctrl-show_settings" style="float: right;">Settings</button></div>
+
+    <div class="ql">
+        <% _.each(queries, function(q) { %>
+        <div class="ql-item ql-item-<%=q.id%>" data-qid="<%= q.id %>">
+            <div class="q-name"><%= q.name %></div>
+            <div class="q-url"><span><%= q.url %></span></div>
+            <div class="q-control">
+                <button class="ctrl-open_query">Open</button>
+                <button class="ctrl-remove_query">Remove</button>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+
+    <div class="ql-control">
+        <button class="ctrl-add_query">New</button>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'lib/query', 'lib/storage', 'lib/runner', 'draggable'], function($, _, Query, Storage, Runner) {
+define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html', 'lib/query', 'lib/storage', 'lib/runner', 'draggable'], function($, _, tpl, kvtpl, Query, Storage, Runner) {
     'use strict';
 
     function QueryPanel(query, options) {
@@ -12,9 +12,9 @@ define(['jquery', 'underscore', 'lib/query', 'lib/storage', 'lib/runner', 'dragg
     }
 
     QueryPanel.prototype = {
-        template: _.template($.trim($('#tpl-querypanel').html())),
+        template: _.template(tpl),
 
-        templateKeyValuePair: _.template($.trim($('#tpl-keyvaluepair').html())),
+        templateKeyValuePair: _.template(kvtpl),
 
         initialize: function(query) {
             if(query instanceof Query) {
