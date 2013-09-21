@@ -7,7 +7,7 @@ require.config({
     },
 
     paths: {
-        text: '../../bower_components/requirejs-text/text',
+        text: '../bower_components/requirejs-text/text',
         tpl: '../templates',
         jquery: '../bower_components/jquery/jquery',
         underscore: '../bower_components/underscore/underscore',
