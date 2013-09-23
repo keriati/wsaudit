@@ -9,7 +9,9 @@ define(['jquery', 'underscore'], function ($, _) {
     Runner.prototype = {
         AJAX_TIMEOUT: 20000,
 
-        run: function () {
+        run: function (options) {
+            var that = this;
+
             this.req = {
                 method:   this.query.get('method'),
                 url:      this.query.get('url'),
@@ -28,6 +30,16 @@ define(['jquery', 'underscore'], function ($, _) {
 
             if(this.req.method === 'head' || this.req.method === 'get') {
                 this.req.cache = false;
+            }
+
+            _.extend(this.req, options);
+
+            if(this.req.dataType === 'jsonp') {
+                if(typeof this.req.error === "function") {
+                    $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+                        that.req.error(jqXHR, ajaxSettings, {error: "Check console for more information!"});
+                    });
+                }
             }
 
             return $.ajax(this.req);

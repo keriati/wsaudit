@@ -100,11 +100,6 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
 
             var myRunner = new Runner(this.query);
 
-            $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
-                console.log(arguments);
-                that.showResult(jqXHR, {error: "Check console for more information!"}, ajaxSettings);
-            });
-
             try {
             myRunner
                 .run({
@@ -112,11 +107,7 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                         that.showResult(jqXHR, data, this);
                     },
                     error: function(jqXHR,textStatus, errorThrown) {
-                        console.log('fail');
                         that.showResult(jqXHR, errorThrown, this);
-                    },
-                    always: function() {
-                        console.log(arguments)
                     }
                 });
             } catch(e) {
