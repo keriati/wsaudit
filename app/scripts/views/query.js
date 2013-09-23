@@ -107,7 +107,7 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                         that.showResult(jqXHR, data, this);
                     },
                     error: function(jqXHR,textStatus, errorThrown) {
-                        that.showResult(jqXHR, errorThrown, this);
+                        that.showResult(jqXHR, jqXHR.responseJSON, this);
                     }
                 });
             } catch(e) {
