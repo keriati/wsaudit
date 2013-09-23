@@ -3,7 +3,6 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
 
     function QueryPanel(query, options) {
         this.$el = $('<div class="drag"></div>');
-        this.$ = this.$el.find;
 
         this.options = _.extend({}, options);
 
@@ -100,7 +99,6 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
 
             var myRunner = new Runner(this.query);
 
-            try {
             myRunner
                 .run({
                     success: function(data, textStatus, jqXHR) {
@@ -110,23 +108,21 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                         that.showResult(jqXHR, jqXHR.responseJSON, this);
                     }
                 });
-            } catch(e) {
-                console.log(JSON.stringify(e));
-            }
         },
 
         showResult: function(jqXHR, data, ajax) {
             var $houtput = this.$el.find('.output-headers'),
-                $doutput = this.$el.find('.output-data');
+                $doutput = this.$el.find('.output-data'),
+                statusball = (jqXHR.status === 200) ? '<span class="greenball"></span>' : '<span class="redball"></span>';
 
             $houtput.empty();
             $doutput.empty();
 
             $houtput.append('<strong>Request URL: </strong>' + ajax.url + '<br/>');
             $houtput.append('<strong>Request Method: </strong>' + ajax.type + '<br/>');
-            $houtput.append('<strong>Status: </strong>' + jqXHR.status + ' ' + jqXHR.statusText + '<br />');
+            $houtput.append('<strong>Status: </strong>' + statusball + ' ' + jqXHR.status + ' ' + jqXHR.statusText + '<br />');
             $houtput.append('<strong>Response Headers: </strong><br />');
-            $houtput.append(jqXHR.getAllResponseHeaders());
+            $houtput.append('<code><pre>' + jqXHR.getAllResponseHeaders() + '</code></pre>');
 
             if(_.isObject(data)) {
                 $doutput.append(JSON.stringify(data, null, "  "));
@@ -174,7 +170,13 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
             this.updateQuery();
 
             if(saveAsNew === true) {
-                var newName = window.prompt('Please enter new name:');
+                var newName = window.prompt('Please enter new name:', this.query.get('name'));
+
+                if(newName === null || newName === "") {
+                    window.alert('Error: No name given.');
+                    return;
+                }
+
                 this.$el.find('.savename').val(newName);
                 this.query.set('id', null);
                 this.query.set('name', newName);

@@ -34,14 +34,6 @@ define(['jquery', 'underscore'], function ($, _) {
 
             _.extend(this.req, options);
 
-            if(this.req.dataType === 'jsonp') {
-                if(typeof this.req.error === "function") {
-                    $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
-                        that.req.error(jqXHR, ajaxSettings, {error: "Check console for more information!"});
-                    });
-                }
-            }
-
             return $.ajax(this.req);
         }
     };

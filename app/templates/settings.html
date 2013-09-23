@@ -1,9 +1,27 @@
-<div class="settings drag-handle">
-    <label> Download Settings:
-        <button class="ctrl-get_download">Download</button>
-    </label>
-    <label>
-        Load Config:
+<div class="panel">
 
-    </label>
+    <div class="panel-header clearfix drag-handle" style="width: 100%">
+        Settings
+        <button class="ctrl-close" style="float: right;">Close</button>
+    </div>
+
+    <div class="settings">
+        <p>
+            <label> Download Configs:
+                <button class="ctrl-get_download">Generate</button>
+                <span id="download">
+
+                </span>
+            </label>
+        </p>
+<hr class="rule">
+        <p>
+            <label>
+                Load Config:
+                <input type="file" class="config-loader"/>
+            </label>
+            <button class="ctrl-read_config">Read Config</button>
+
+        </p>
+    </div>
 </div>

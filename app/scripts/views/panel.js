@@ -1,4 +1,17 @@
-define(['jquery', 'underscore', 'text!tpl/panel.html', 'lib/storage', 'views/query', 'draggable'], function ($, _, tpl, Storage, QueryPanel) {
+define([
+    'jquery',
+    'underscore',
+
+    'text!tpl/panel.html',
+
+    'lib/storage',
+
+    'views/query',
+    'views/settings',
+
+    'draggable'
+],
+function ($, _, tpl, Storage, QueryPanel, SettingsPanel) {
     'use strict';
 
     function Panel(data) {
@@ -30,8 +43,6 @@ define(['jquery', 'underscore', 'text!tpl/panel.html', 'lib/storage', 'views/que
 
             this.$el.html(this.template({queries: rawqueries}));
 
-            this.generateDownload();
-
             return this;
         },
 
@@ -47,6 +58,10 @@ define(['jquery', 'underscore', 'text!tpl/panel.html', 'lib/storage', 'views/que
 
             this.$el.on('click', '.ctrl-open_query', function(e) {
                 that.openQuery(parseInt($(e.target).parent().parent().attr('data-qid'), 10));
+            });
+
+            this.$el.on('click', '.ctrl-open_settings', function(e) {
+                that.openSettings();
             });
         },
 
@@ -70,14 +85,10 @@ define(['jquery', 'underscore', 'text!tpl/panel.html', 'lib/storage', 'views/que
             qp.render().$el.appendTo('body');
         },
 
-        generateDownload: function() {
-            if(window.URL) {
-                var data = JSON.stringify(this.storage.getAll(), null, "  ");
-                var blob = new Blob([data], {type: "application/json"});
-                var url  = URL.createObjectURL(blob);
+        openSettings: function() {
+            var settings = new SettingsPanel({panel: this});
 
-                this.$el.find('.download').html($('<a href="' + url + '" download="wsa-settings.json">Download</a>'));
-            }
+            settings.render().$el.appendTo('body');
         }
     };
 

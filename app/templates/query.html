@@ -66,7 +66,7 @@
                         <option value="false" <% print((!q.processdata) ? 'selected=selected' : '');%>>Unprocessed Data</option>
                     </select>
                 </p>
-                <div class="data-cont">
+                <div class="data-cont" <% print((!q.processdata) ? 'style="display: none"' : '');%>>
                     <table class="data-list">
                         <thead>
                         <tr>
@@ -89,7 +89,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="rawdata-cont" style="display: none">
+                <div class="rawdata-cont" <% print((q.processdata) ? 'style="display: none"' : '');%>>
                     <textarea class="rawdata"><%=q.rawdata%></textarea>
                 </div>
             </div>
@@ -99,10 +99,7 @@
         <button class="ctrl-start">Start</button>
 
         <p>Response Headers</p>
-        <div>
-            <code>
-                <pre class="output-headers"></pre>
-            </code>
+        <div class="output-headers">
         </div>
 
         <p>Output data</p>
