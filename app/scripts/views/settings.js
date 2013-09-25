@@ -1,4 +1,10 @@
-define(['jquery', 'underscore', 'text!tpl/settings.html', 'lib/query', 'lib/storage', 'draggable'], function($, _, tpl, Query, Storage) {
+define([
+    'backbone',
+
+    'text!tpl/settings.html',
+
+    'draggable'
+], function(Backbone, tpl) {
     'use strict';
 
     return Backbone.View.extend({

@@ -3,11 +3,10 @@ define([
     'text!tpl/query.html',
     'text!tpl/keyvalue.html',
 
-    'lib/query',
     'lib/runner',
 
     'draggable'
-], function(Backbone, tpl, tplkv, Query, Runner) {
+], function(Backbone, tpl, tplkv, Runner) {
     'use strict';
 
 
@@ -17,13 +16,13 @@ define([
         tplKV: _.template(tplkv),
 
         events: {
-            'click .ctrl-start': 'start',
-            'click .ctrl-save': 'save',
-            'click .ctrl-saveas': 'saveAs',
-            'click .ctrl-remove': 'remove',
-            'click .ctrl-close': 'close',
-            'click .ctrl-add_data': 'addData',
-            'click .ctrl-add_header': 'addHeader',
+            'click .ctrl-start':       'start',
+            'click .ctrl-save':        'save',
+            'click .ctrl-saveas':      'saveAs',
+            'click .ctrl-remove':      'remove',
+            'click .ctrl-close':       'close',
+            'click .ctrl-add_data':    'addData',
+            'click .ctrl-add_header':  'addHeader',
             'click .ctrl-remove_data': 'removeData',
 
             'change .processdata': function() {
@@ -53,6 +52,8 @@ define([
                 datatypes: datatypes,
                 q:         this.model.toJSON()
             };
+
+            console.log('QueryTPL Data: ', data);
 
             this.$el.html(this.template(data));
 
@@ -154,10 +155,9 @@ define([
                 this.model.set('name', newName);
             }
 
-            this.app.collection.create()
+            console.log(this.model)
 
-            this.options.panel.render();
-            this.render();
+            this.app.collection.create(this.model);
         },
 
         saveAs: function() {
