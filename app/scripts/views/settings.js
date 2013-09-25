@@ -1,3 +1,4 @@
+/*global define*/
 define([
     'backbone',
 
@@ -17,8 +18,6 @@ define([
         },
 
         initialize: function() {
-//            this.storage = this.parent.app.storage;
-
             this.$el.draggable({stack: '.drag', handle: '.drag-handle'});
         },
 

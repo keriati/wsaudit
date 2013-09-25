@@ -1,3 +1,4 @@
+/*global define*/
 define(['jquery', 'underscore'], function ($, _) {
     'use strict';
 
@@ -10,7 +11,6 @@ define(['jquery', 'underscore'], function ($, _) {
         AJAX_TIMEOUT: 20000,
 
         run: function (options) {
-            var that = this;
 
             this.req = {
                 method:   this.query.get('method'),

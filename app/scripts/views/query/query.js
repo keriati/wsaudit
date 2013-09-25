@@ -1,14 +1,16 @@
+/*global define*/
 define([
     'backbone',
-    'text!tpl/query.html',
-    'text!tpl/keyvalue.html',
+
+    'text!tpl/query/query.html',
+    'text!tpl/query/keyvalue.html',
 
     'lib/runner',
 
     'draggable'
-], function(Backbone, tpl, tplkv, Runner) {
+],
+function(Backbone, tpl, tplkv, Runner) {
     'use strict';
-
 
     return Backbone.View.extend({
         template: _.template(tpl),
