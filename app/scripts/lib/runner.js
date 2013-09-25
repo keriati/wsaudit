@@ -15,13 +15,19 @@ define(['jquery', 'underscore'], function ($, _) {
             this.req = {
                 method:   this.query.get('method'),
                 url:      this.query.get('url'),
-                headers:  this.query.get('headers'),
-                dataType: this.query.get('datatype')
+                dataType: this.query.get('datatype'),
+                headers:  {}
             };
 
             if(this.query.get('processdata')) {
-                this.req.data = this.query.get('data');
+                this.req.data = {};
+
+                _.each(this.query.get('data'), function(data) {
+                    this.req.data[data.key] = data.value;
+                }, this);
+
                 this.req.processData = true;
+
             } else {
                 this.req.data = this.query.get('rawdata');
                 this.req.processData = false;
@@ -31,6 +37,10 @@ define(['jquery', 'underscore'], function ($, _) {
             if(this.req.method === 'head' || this.req.method === 'get') {
                 this.req.cache = false;
             }
+
+            _.each(this.query.get('headers'), function(header) {
+                this.req.headers[header.key] = header.value;
+            }, this);
 
             _.extend(this.req, options);
 
