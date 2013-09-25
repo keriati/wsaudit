@@ -1,37 +1,19 @@
 define(['jquery', 'underscore', 'text!tpl/settings.html', 'lib/query', 'lib/storage', 'draggable'], function($, _, tpl, Query, Storage) {
     'use strict';
 
-    function SettingsPanel(options) {
-        this.$el = $('<div class="drag"></div>');
-
-        this.options = _.extend({}, options);
-
-        this.events();
-        this.initialize();
-    }
-
-    SettingsPanel.prototype = {
+    return Backbone.View.extend({
         template: _.template(tpl),
 
-        initialize: function() {
-            this.$el.draggable({stack: '.drag', handle: '.drag-handle'});
-            this.storage = new Storage();
+        events: {
+            'click .ctrl-get_download': 'generateDownload',
+            'click .ctrl-close':        'close',
+            'click .ctrl-read':         'read'
         },
 
-        events: function() {
-            var that = this;
+        initialize: function() {
+//            this.storage = this.parent.app.storage;
 
-            this.$el.on('click', '.ctrl-get_download', function(){
-                that.generateDownload();
-            });
-
-            this.$el.on('click', '.ctrl-close', function(){
-                that.close();
-            });
-
-            this.$el.on('click', '.ctrl-read_config', function(){
-                that.readConfig();
-            });
+            this.$el.draggable({stack: '.drag', handle: '.drag-handle'});
         },
 
         render: function() {
@@ -59,8 +41,8 @@ define(['jquery', 'underscore', 'text!tpl/settings.html', 'lib/query', 'lib/stor
             }
         },
 
-        readConfig: function() {
-//            debugger;
+        read: function() {
+
             var that = this;
 
             var myFile = this.$el.find('.config-loader')[0].files[0],
@@ -86,7 +68,5 @@ define(['jquery', 'underscore', 'text!tpl/settings.html', 'lib/query', 'lib/stor
         close: function() {
             this.$el.remove();
         }
-    };
-
-    return SettingsPanel;
+    });
 });

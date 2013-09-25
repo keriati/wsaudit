@@ -46,11 +46,11 @@
                     <tbody>
                     <% _.each(q.headers, function(header) { %>
 
-                    <tr class="keyvaluepair header-pair">
-                        <td><input type="text" class="header-key" value="<%=header.key%>"/></td>
-                        <td><input type="text" class="header-value" value="<%=header.value%>"/></td>
-                        <td><button class="ctrl-removepair">-</button></td>
-                    </tr>
+                        <tr class="keyvaluepair header-pair">
+                            <td><input type="text" class="header-key" value="<%=header.key%>"/></td>
+                            <td><input type="text" class="header-value" value="<%=header.value%>"/></td>
+                            <td><button class="ctrl-removepair">-</button></td>
+                        </tr>
 
                     <% }) %>
                     </tbody>
@@ -76,16 +76,15 @@
                         </tr>
                         </thead>
                         <tbody>
-
                         <% _.each(q.data, function(data) { %>
 
-                        <tr class="keyvaluepair data-pair">
-                            <td><input type="text" class="data-key" value="<%=data.key%>"/></td>
-                            <td><input type="text" class="data-value" value="<%=data.value%>"/></td>
-                            <td><button class="ctrl-removepair">-</button></td>
-                            </td>
+                            <tr class="keyvaluepair data-pair">
+                                <td><input type="text" class="data-key" value="<%=data.key%>"/></td>
+                                <td><input type="text" class="data-value" value="<%=data.value%>"/></td>
+                                <td><button class="ctrl-removepair">-</button></td>
+                            </tr>
 
-                            <% }) %>
+                        <% }) %>
                         </tbody>
                     </table>
                 </div>

@@ -1,5 +1,9 @@
 require.config({
     shim: {
+        backbone: {
+            exports: 'Backbone',
+            deps: ['jquery', 'underscore']
+        },
         underscore: {
             exports: '_'
         },
@@ -7,18 +11,18 @@ require.config({
     },
 
     paths: {
-        text: '../bower_components/requirejs-text/text',
-        tpl: '../templates',
-        jquery: '../bower_components/jquery/jquery',
-        underscore: '../bower_components/underscore/underscore',
-        draggable: '../vendor/jquery-ui-1.10.3.custom'
+        text:         '../bower_components/requirejs-text/text',
+        tpl:          '../templates',
+        jquery:       '../bower_components/jquery/jquery',
+        underscore:   '../bower_components/underscore/underscore',
+        backbone:     '../bower_components/backbone/backbone',
+        localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
+        draggable:    '../vendor/jquery-ui-1.10.3.custom'
     }
 });
 
-require(['app'], function (WSAudit) {
+require(['wsaudit'], function (WSAudit) {
     'use strict';
 
     var myWSAudit = new WSAudit();
-
-    $('.ctrl-add_query').trigger('click');
 });

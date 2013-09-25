@@ -6,7 +6,8 @@
     "jquery": "~1.10.2",
     "underscore": "~1.5.2",
     "requirejs-text": "~2.0.10",
-    "backbone": "~1.0.0"
+    "backbone": "~1.0.0",
+    "Backbone.localStorage": "~1.1.6"
   },
   "devDependencies": {}
 }

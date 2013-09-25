@@ -1,4 +1,4 @@
-define(['jquery', 'underscore'], function ($, _) {
+define(['backbone'], function (Backbone) {
     'use strict';
 
     function Query(data) {
