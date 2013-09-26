@@ -1,4 +1,9 @@
-define(['jquery', 'underscore'], function ($, _) {
+/*global define*/
+define([
+    'jquery',
+    'underscore'
+],
+function ($, _) {
     'use strict';
 
     function Query(data) {

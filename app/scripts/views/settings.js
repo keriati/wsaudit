@@ -1,4 +1,16 @@
-define(['jquery', 'underscore', 'text!tpl/settings.html', 'lib/query', 'lib/storage', 'draggable'], function($, _, tpl, Query, Storage) {
+/*global define, URL*/
+define([
+    'jquery',
+    'underscore',
+
+    'text!tpl/settings.html',
+
+    'lib/query',
+    'lib/storage',
+
+    'draggable'
+],
+function($, _, tpl, Query, QueryStorage) {
     'use strict';
 
     function SettingsPanel(options) {
@@ -15,7 +27,7 @@ define(['jquery', 'underscore', 'text!tpl/settings.html', 'lib/query', 'lib/stor
 
         initialize: function() {
             this.$el.draggable({stack: '.drag', handle: '.drag-handle'});
-            this.storage = new Storage();
+            this.storage = new QueryStorage();
         },
 
         events: function() {
@@ -56,6 +68,8 @@ define(['jquery', 'underscore', 'text!tpl/settings.html', 'lib/query', 'lib/stor
                 var url  = URL.createObjectURL(blob);
 
                 this.$el.find('#download').html($('<a href="' + url + '" download="wsa-settings.json">Download</a>'));
+            } else {
+                window.alert('URL.createObjectURL is not supported in your browser :(');
             }
         },
 

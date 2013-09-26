@@ -23,9 +23,9 @@
 
             <label>Data Type</label>
             <select class="datatype">
-                <% _.each(datatypes, function(datatype) { %>
+                <% _.each(dataTypes, function(dataType) { %>
 
-                <option value="<%=datatype%>" <% print((q.datatype === datatype) ? 'selected=selected' : ''); %>><%=datatype.toUpperCase()%></option>
+                <option value="<%=dataType%>" <% print((q.dataType === dataType) ? 'selected=selected' : ''); %>><%=dataType.toUpperCase()%></option>
 
                 <% }); %>
             </select>
@@ -37,22 +37,20 @@
                 <p>Extra headers <button class="ctrl-add_header">+</button></p>
                 <table class="header-list">
                     <thead>
-                    <tr>
-                        <th>Key</th>
-                        <th>Value</th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <% _.each(q.headers, function(header) { %>
-
-                    <tr class="keyvaluepair header-pair">
-                        <td><input type="text" class="header-key" value="<%=header.key%>"/></td>
-                        <td><input type="text" class="header-value" value="<%=header.value%>"/></td>
-                        <td><button class="ctrl-removepair">-</button></td>
-                    </tr>
-
-                    <% }) %>
+                        <% _.each(q.headers, function(header) { %>
+                        <tr class="keyvaluepair header-pair">
+                            <td><input type="text" class="header-key" value="<%=header.key%>"/></td>
+                            <td><input type="text" class="header-value" value="<%=header.value%>"/></td>
+                            <td><button class="ctrl-removepair">-</button></td>
+                        </tr>
+                        <% }) %>
                     </tbody>
                 </table>
 
@@ -69,22 +67,19 @@
                 <div class="data-cont" <% print((!q.processdata) ? 'style="display: none"' : '');%>>
                     <table class="data-list">
                         <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Value</th>
-                            <th></th>
-                        </tr>
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
-
-                        <% _.each(q.data, function(data) { %>
-
-                        <tr class="keyvaluepair data-pair">
-                            <td><input type="text" class="data-key" value="<%=data.key%>"/></td>
-                            <td><input type="text" class="data-value" value="<%=data.value%>"/></td>
-                            <td><button class="ctrl-removepair">-</button></td>
-                            </td>
-
+                            <% _.each(q.data, function(data) { %>
+                            <tr class="keyvaluepair data-pair">
+                                <td><input type="text" class="data-key" value="<%=data.key%>"/></td>
+                                <td><input type="text" class="data-value" value="<%=data.value%>"/></td>
+                                <td><button class="ctrl-removepair">-</button></td>
+                            </tr>
                             <% }) %>
                         </tbody>
                     </table>
@@ -97,10 +92,10 @@
         </div>
 
         <button class="ctrl-start">Start</button>
+        <button class="ctrl-gen_ajax">Generate $.ajax()</button>
 
         <p>Response Headers</p>
-        <div class="output-headers">
-        </div>
+        <div class="output-headers"></div>
 
         <p>Output data</p>
         <div>

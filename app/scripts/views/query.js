@@ -1,5 +1,20 @@
 /*global define*/
-define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html', 'lib/query', 'lib/storage', 'lib/runner', 'draggable'], function($, _, tpl, kvtpl, Query, Storage, Runner) {
+define([
+    'jquery',
+    'underscore',
+
+    'text!tpl/query.html',
+    'text!tpl/keyvalue.html',
+
+    'views/jqajax',
+
+    'lib/query',
+    'lib/storage',
+    'lib/runner',
+
+    'draggable'
+],
+function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Runner) {
     'use strict';
 
     function QueryPanel(query, options) {
@@ -31,6 +46,10 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
 
             this.$el.on('click', '.ctrl-start', function(){
                 that.start();
+            });
+
+            this.$el.on('click', '.ctrl-gen_ajax', function(){
+                that.generateJQAJAX();
             });
 
             this.$el.on('click', '.ctrl-save_query', function(){
@@ -78,9 +97,9 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                 data;
 
             data = {
-                methods: methods,
-                datatypes: datatypes,
-                q: this.query.toJSON()
+                methods:   methods,
+                dataTypes: datatypes,
+                q:         this.query.toJSON()
             };
 
             this.$el.html(this.template(data));
@@ -101,19 +120,20 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
             var myRunner = new Runner(this.query);
 
             myRunner
-                .run({
+                .prepare({
                     success: function(data, textStatus, jqXHR) {
                         that.showResult(jqXHR, data, this);
                     },
-                    error: function(jqXHR,textStatus, errorThrown) {
+                    error: function(jqXHR) {
                         that.showResult(jqXHR, jqXHR.responseJSON, this);
                     }
-                });
+                })
+                .run();
         },
 
         showResult: function(jqXHR, data, ajax) {
-            var $houtput = this.$el.find('.output-headers'),
-                $doutput = this.$el.find('.output-data'),
+            var $houtput   = this.$el.find('.output-headers'),
+                $doutput   = this.$el.find('.output-data'),
                 statusball = (jqXHR.status === 200) ? '<span class="greenball"></span>' : '<span class="redball"></span>';
 
             $houtput.empty();
@@ -182,7 +202,7 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                 this.query.set('name', newName);
             }
 
-            var myStorage = new Storage();
+            var myStorage = new QueryStorage();
 
             this.query = myStorage.save(this.query);
 
@@ -195,13 +215,27 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
             this.$el.find('.' + type + '-list').append(tpl);
         },
 
+        generateJQAJAX: function() {
+            var that = this;
+
+            this.updateQuery();
+
+            var myRunner = new Runner(this.query);
+
+            myRunner.prepare();
+
+            var myJQAjaxView = new JQAJAXView({name: this.query.get('name'), q: myRunner.req});
+
+            myJQAjaxView.render().$el.appendTo('body');
+        },
+
         close: function() {
             this.$el.remove();
         },
 
         removeQuery: function() {
             if(window.confirm('Do you really want to remove this Query?')) {
-                var myStorage = new Storage();
+                var myStorage = new QueryStorage();
                 myStorage.remove(this.query.get('id'));
                 this.options.panel.$el.find('.ql-item-' + this.query.get('id')).remove();
                 this.close();

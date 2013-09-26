@@ -1,22 +1,31 @@
-define(['jquery', 'underscore'], function ($, _) {
+/*global define*/
+define([
+    'jquery',
+    'underscore'
+],
+function ($, _) {
     'use strict';
 
     function Runner(Query) {
         this.query = Query;
-        this.request = {};
+        this.req = {};
     }
 
     Runner.prototype = {
         AJAX_TIMEOUT: 20000,
 
-        run: function (options) {
-            var that = this;
+        run : function() {
+            return $.ajax(this.req);
+        },
+
+        prepare: function (options, run) {
 
             this.req = {
                 method:   this.query.get('method'),
                 url:      this.query.get('url'),
                 dataType: this.query.get('datatype'),
-                headers:  {}
+                headers:  {},
+                timeout:  this.AJAX_TIMEOUT
             };
 
             if(this.query.get('processdata')) {
@@ -44,7 +53,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
             _.extend(this.req, options);
 
-            return $.ajax(this.req);
+            return this;
         }
     };
 

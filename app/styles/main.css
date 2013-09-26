@@ -173,6 +173,19 @@ input.url {
     background-color: green;
 }
 
+.jqajaxbox {
+    background-color: white;
+    border: 1px solid #444;
+    margin: 0 5px 5px;
+    padding: 5px;
+    overflow: scroll;
+}
+
+.jqajaxbox pre {
+    margin: 0;
+}
+
+
 /*! jQuery UI - v1.10.3 - 2013-09-20
 * http://jqueryui.com
 * Includes: jquery.ui.core.css
