@@ -1,3 +1,4 @@
+/*global define*/
 define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html', 'lib/query', 'lib/storage', 'lib/runner', 'draggable'], function($, _, tpl, kvtpl, Query, Storage, Runner) {
     'use strict';
 
@@ -177,7 +178,6 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                     return;
                 }
 
-                this.$el.find('.savename').val(newName);
                 this.query.set('id', null);
                 this.query.set('name', newName);
             }

@@ -109,9 +109,7 @@
             </code>
         </div>
 
-        <% if(q.name === "") { %>
-        <input type="text" class="savename" />
-        <% } %>
+        <input type="<% print((q.name === '') ? 'text' : 'hidden')%>" class="savename" value="<%= q.name%>" placeholder="New Query" />
 
         <button class="ctrl-save_query">Save</button>
 
