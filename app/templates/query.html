@@ -25,7 +25,7 @@
             <select class="datatype">
                 <% _.each(dataTypes, function(dataType) { %>
 
-                <option value="<%=dataType%>" <% print((q.dataType === dataType) ? 'selected=selected' : ''); %>><%=dataType.toUpperCase()%></option>
+                <option value="<%=dataType%>" <% print((q.datatype === dataType) ? 'selected=selected' : ''); %>><%=dataType.toUpperCase()%></option>
 
                 <% }); %>
             </select>
