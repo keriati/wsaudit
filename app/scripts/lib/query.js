@@ -34,7 +34,7 @@ function ($, _) {
 
         set: function(data, value) {
             if(_.isObject(data)) {
-                _.extend(this._attributes, data);
+                _.extend(this._attributes, _.pick(data, _.keys(this._attributes)));
             } else {
                 if(this._attributes.hasOwnProperty(data)) {
                     this._attributes[data] = value;
