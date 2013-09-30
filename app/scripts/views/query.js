@@ -10,11 +10,11 @@ define([
 
     'lib/query',
     'lib/storage',
-    'lib/runner',
+    'lib/request',
 
     'draggable'
 ],
-function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Runner) {
+function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Request) {
     'use strict';
 
     function QueryPanel(query, options) {
@@ -117,9 +117,9 @@ function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Runner) {
 
             this.updateQuery();
 
-            var myRunner = new Runner(this.query);
+            var myRequest = new Request(this.query);
 
-            myRunner
+            myRequest
                 .prepare({
                     success: function(data, textStatus, jqXHR) {
                         that.showResult(jqXHR, data, this);
@@ -220,11 +220,7 @@ function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Runner) {
 
             this.updateQuery();
 
-            var myRunner = new Runner(this.query);
-
-            myRunner.prepare();
-
-            var myJQAjaxView = new JQAJAXView({name: this.query.get('name'), q: myRunner.req});
+            var myJQAjaxView = new JQAJAXView({query: this.query});
 
             myJQAjaxView.render().$el.appendTo('body');
         },

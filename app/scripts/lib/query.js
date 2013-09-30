@@ -33,11 +33,31 @@ function ($, _) {
         },
 
         set: function(data, value) {
+            if(_.isUndefined(value) && !_.isObject(data)) {
+                throw {
+                    name: 'MissingArgument',
+                    message: 'MissingArgument'
+                };
+            }
+
             if(_.isObject(data)) {
+                var invalidFields = _.keys(_.omit(data, _.keys(this._attributes)));
+
+                if( invalidFields.length > 0) {
+                    throw {
+                        name: 'InvalidField',
+                        message: 'Invalid fields found: ' + JSON.stringify(invalidFields)
+                    };
+                }
                 _.extend(this._attributes, _.pick(data, _.keys(this._attributes)));
             } else {
                 if(this._attributes.hasOwnProperty(data)) {
                     this._attributes[data] = value;
+                } else {
+                    throw ({
+                        name: 'InvalidField',
+                        message: 'Invalid fields found: ' + data
+                    });
                 }
             }
 

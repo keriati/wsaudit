@@ -1,6 +1,6 @@
 {
-  "name": "wsaudit2",
-  "version": "0.0.0",
+  "name": "wsaudit",
+  "version": "2.0.5",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",

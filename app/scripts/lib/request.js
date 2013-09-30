@@ -6,19 +6,19 @@ define([
 function ($, _) {
     'use strict';
 
-    function Runner(Query) {
+    function Request(Query) {
         this.query = Query;
         this.req = {};
     }
 
-    Runner.prototype = {
+    Request.prototype = {
         AJAX_TIMEOUT: 20000,
 
         run : function() {
             return $.ajax(this.req);
         },
 
-        prepare: function (options, run) {
+        prepare: function (options) {
 
             this.req = {
                 method:   this.query.get('method'),
@@ -57,5 +57,5 @@ function ($, _) {
         }
     };
 
-    return Runner;
+    return Request;
 });

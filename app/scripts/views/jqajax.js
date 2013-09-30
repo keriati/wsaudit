@@ -1,5 +1,5 @@
 /*global define*/
-define(['jquery', 'underscore', 'text!tpl/jqajax.html'], function($, _, tpl) {
+define(['jquery', 'underscore', 'text!tpl/jqajax.html', 'lib/printer'], function($, _, tpl, Printer) {
     'use strict';
 
     function JQAJAXView(options) {
@@ -27,7 +27,15 @@ define(['jquery', 'underscore', 'text!tpl/jqajax.html'], function($, _, tpl) {
         },
 
         render: function() {
-            this.$el.html(this.template({name: this.options.name, q: this.options.q}));
+            var myPrinter = new Printer();
+
+            var jqajax = myPrinter.makejqajax(this.options.query);
+
+
+            this.$el.html(this.template({
+                name: this.options.query.get('name'),
+                jqajax: jqajax
+            }));
 
             return this;
         },

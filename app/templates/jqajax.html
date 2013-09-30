@@ -1,8 +1,3 @@
-<%
-    var qString = JSON.stringify(q, null, '  ');
-    qString = qString.replace(/"([a-zA-Z]*)":/gm, '$1:');
-    qString = qString.replace(/\n}$/, ',\n  success: function(data, textStatus, jqXHR) { \n    //Success Code here\n  },\n  error: function(jqXHR, textStatus, errorThrown) {\n    //Error handling here\n  }\n}');
-%>
 <div class="panel">
 
     <div class="panel-header clearfix drag-handle" style="width: 100%;"><%=name || 'New Query'%> <button class="ctrl-close" style="float: right;">Close</button></div>
@@ -10,9 +5,7 @@
     <div class="panel-content">
         <div class="jqajaxbox">
             <code>
-                <pre>
-$.ajax(<%=qString%>);
-                </pre>
+                <pre><%=jqajax%></pre>
             </code>
         </div>
     </div>

@@ -1,33 +1,40 @@
-/*global define, describe, it, should*/
+/*global define, describe, it, expect*/
 define(['lib/query'], function(Query) {
     'use strict';
 
     describe('Query', function () {
-        describe('#set', function() {
+        describe('#set()', function() {
             it('should set attibutes with 2 parameters', function() {
                 var myQuery = new Query();
 
                 myQuery.set('name', 'test');
 
-                myQuery.get('name').should.equal('test');
+                expect(myQuery._attributes.name).to.equal('test');
             });
             it('should set attibutes from objects', function() {
                 var myQuery = new Query();
 
                 myQuery.set({'name': 'test'});
 
-                myQuery.get('name').should.equal('test');
+                expect(myQuery._attributes.name).to.equal('test');
             });
-            it('should only set valid attributes', function() {
+            it('should throw exception if no argument is given', function() {
                 var myQuery = new Query();
 
-                myQuery.set({'invalid': 'test'});
+                function fn() {
+                    myQuery.set();
+                }
 
-                expect(myQuery.get('invalid')).to.be.undefined;
+                expect( fn ).to.throw(/MissingArgument/);
+            });
+            it('should throw exception if invalid argument is given', function() {
+                var myQuery = new Query();
 
-                myQuery.set('invalid', 'test');
+                function fn() {
+                    myQuery.set({invalid: 'test'});
+                }
 
-                expect(myQuery.get('invalid')).to.be.undefined;
+                expect( fn ).to.throw(/Invalid fields/);
             });
         });
     });

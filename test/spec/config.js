@@ -17,7 +17,7 @@ require.config({
         underscore: '../bower_components/underscore/underscore',
         draggable:  '../vendor/jquery-ui-1.10.3.custom',
         spec:       '../spec',
-        runner:       '../spec/runner'
+        runner:     '../spec/runner'
     },
 
     baseUrl: 'scripts'
