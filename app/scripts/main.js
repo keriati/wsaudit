@@ -21,7 +21,12 @@ require.config({
 require(['jquery', 'app'], function ($, WSAudit) {
     'use strict';
 
+    try {
     var myWSAudit = new WSAudit();
+    } catch(e) {
+        console.log('Error!');
+        console.log(e);
+    }
 
     $('.ctrl-add_query').trigger('click');
 });

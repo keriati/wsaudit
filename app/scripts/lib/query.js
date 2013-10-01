@@ -10,11 +10,12 @@ function ($, _) {
         this._attributes = {
             id: null,
 
-            name:     '',
-            method:   '',
-            url:      '',
-            datatype: '',
-            rawdata:  '',
+            name:        '',
+            method:      '',
+            url:         '',
+            datatype:    '',
+            contenttype: '',
+            rawdata:     '',
 
             headers: [],
             data:    [],

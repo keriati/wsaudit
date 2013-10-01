@@ -5,6 +5,7 @@ define([
 
     'text!tpl/query.html',
     'text!tpl/keyvalue.html',
+    'text!tpl/file.html',
 
     'views/jqajax',
 
@@ -14,7 +15,7 @@ define([
 
     'draggable'
 ],
-function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Request) {
+function($, _, tpl, kvtpl, filetpl, JQAJAXView, Query, QueryStorage, Request) {
     'use strict';
 
     function QueryPanel(query, options) {
@@ -30,6 +31,8 @@ function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Request) {
         template: _.template(tpl),
 
         templateKeyValuePair: _.template(kvtpl),
+
+        templateFile: _.template(filetpl),
 
         initialize: function(query) {
             if(query instanceof Query) {
@@ -72,22 +75,20 @@ function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Request) {
                 that.addKeyValuePair("", "", 'data');
             });
 
+            this.$el.on('click', '.ctrl-add_string', function(){
+                that.addKeyValuePair("", "", 'data');
+            });
+
+            this.$el.on('click', '.ctrl-add_file', function(){
+                that.addFile();
+            });
+
             this.$el.on('click', '.ctrl-add_header', function(){
                 that.addKeyValuePair("", "", 'header');
             });
 
             this.$el.on('click', '.ctrl-removepair', function() {
                 $(this).parent().parent().remove();
-            });
-
-            this.$el.on('change', '.processdata', function() {
-                if($(this).val() === 'true') {
-                    that.$el.find('.data-cont').show();
-                    that.$el.find('.rawdata-cont').hide();
-                } else {
-                    that.$el.find('.data-cont').hide();
-                    that.$el.find('.rawdata-cont').show();
-                }
             });
         },
 
@@ -156,13 +157,6 @@ function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Request) {
             var dataPairs = [],
                 headerPairs = [];
 
-            this.$el.find('.data-pair').each(function(){
-                dataPairs.push({
-                    key:   $(this).find('.data-key').val(),
-                    value: $(this).find('.data-value').val()
-                });
-            });
-
             this.$el.find('.header-pair').each(function(){
                 headerPairs.push({
                     key:   $(this).find('.header-key').val(),
@@ -176,13 +170,43 @@ function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Request) {
                 url:         this.$el.find('.url').val(),
                 datatype:    this.$el.find('.datatype').val(),
                 rawdata:     this.$el.find('.rawdata').val(),
-                data:        dataPairs,
-                processdata: true,
                 headers:     headerPairs
             });
 
-            if(this.$el.find('.processdata').val() !== 'true') {
+            if(this.$el.find('.processdata').val() === 'true') {
+
+                this.query.set({processdata: true});
+
+                this.$el.find('.data-pair').each(function(){
+                    dataPairs.push({
+                        key:   $(this).find('.data-key').val(),
+                        value: $(this).find('.data-value').val()
+                    });
+                });
+
+                this.query.set({data: dataPairs});
+
+            } else {
                 this.query.set({processdata: false});
+
+                var myFormData = new FormData();
+
+                this.$el.find('.data-pair').each(function(){
+                    myFormData.append(
+                        $(this).find('.data-key').val(),
+                        $(this).find('.data-value').val()
+                    );
+                });
+
+                this.$el.find('.data-files').each(function() {
+                    myFormData.append(
+                        $(this).find('.data-name').val(),
+                        $(this).find('.data-file')[0].files[0]
+                    );
+                });
+
+                this.query.set({data: myFormData});
+                this.query.set({contenttype: false});
             }
         },
 
@@ -213,6 +237,11 @@ function($, _, tpl, kvtpl, JQAJAXView, Query, QueryStorage, Request) {
         addKeyValuePair: function(key, value, type) {
             var tpl = this.templateKeyValuePair({key: key, value: value, type: type});
             this.$el.find('.' + type + '-list').append(tpl);
+        },
+
+        addFile: function() {
+            var tpl = this.templateFile();
+            this.$el.find('.data-list').append(tpl);
         },
 
         generateJQAJAX: function() {

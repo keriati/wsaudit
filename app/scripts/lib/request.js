@@ -38,9 +38,9 @@ function ($, _) {
                 this.req.processData = true;
 
             } else {
-                this.req.data = this.query.get('rawdata');
+                this.req.data = this.query.get('data');
                 this.req.processData = false;
-                this.req.contentType = 'application/json';
+                this.req.contentType = this.query.get('contenttype');
             }
 
             if(this.req.method === 'head' || this.req.method === 'get') {
