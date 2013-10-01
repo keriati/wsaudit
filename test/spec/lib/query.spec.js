@@ -37,6 +37,31 @@ define(['lib/query'], function(Query) {
                 expect( fn ).to.throw(/Invalid fields/);
             });
         });
+        describe('#get()', function() {
+            it('should return the value of an attribute', function() {
+                var myQuery = new Query({name: 'Test Query'});
+
+                expect(myQuery.get('name')).to.equal('Test Query');
+            });
+            it('should throw an error if no argument is given', function() {
+                var myQuery = new Query({name: 'Test Query'});
+
+                function fn() {
+                    myQuery.get();
+                }
+
+                expect(fn).to.throw(/MissingArgument/);
+            });
+            it('should throw an error if invalid fieldname is given', function() {
+                var myQuery = new Query({name: 'Test Query'});
+
+                function fn() {
+                    myQuery.get('invalid');
+                }
+
+                expect(fn).to.throw(/Invalid field/);
+            });
+        });
     });
 
 });

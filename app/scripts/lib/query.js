@@ -29,7 +29,21 @@ function ($, _) {
 
     Query.prototype = {
         get: function (key) {
-            return this._attributes[key];
+            if(typeof key === 'undefined'){
+                throw {
+                    name: 'MissingArgument',
+                    message: 'MissingArgument'
+                };
+            }
+
+            if(this._attributes.hasOwnProperty(key)){
+                return this._attributes[key];
+            } else {
+                throw {
+                    name: 'InvalidField',
+                    message: 'Invalid fields found: ' + key
+                };
+            }
         },
 
         set: function(data, value) {
