@@ -14,7 +14,8 @@ function ($, _) {
             method:      '',
             url:         '',
             datatype:    '',
-            contenttype: '',
+            contenttype: 'default',
+
             rawdata:     '',
 
             headers: [],

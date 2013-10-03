@@ -63,6 +63,15 @@
                         <option value="true" <% print((q.processdata) ? 'selected=selected' : '');%>>Processed Data</option>
                         <option value="false" <% print((!q.processdata) ? 'selected=selected' : '');%>>Unprocessed Data</option>
                     </select>
+                    <br />
+                    Content Type:
+                    <select class="contenttype">
+                        <option value="default">Default</option>
+                        <option value="json">JSON</option>
+                        <option value="false">False</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="text" class="other-contenttype" style="display: none"/>
                 </p>
                 <div class="data-cont">
                     <button class="ctrl-add_data">+String</button>

@@ -28,6 +28,10 @@ function ($, _) {
                 timeout:  this.AJAX_TIMEOUT
             };
 
+            if(this.query.get('contenttype') !== 'default') {
+                this.req.contentType = this.query.get('contenttype');
+            }
+
             if(this.query.get('processdata')) {
                 this.req.data = {};
 
@@ -40,7 +44,6 @@ function ($, _) {
             } else {
                 this.req.data = this.query.get('data');
                 this.req.processData = false;
-                this.req.contentType = this.query.get('contenttype');
             }
 
             if(this.req.method === 'head' || this.req.method === 'get') {

@@ -90,6 +90,14 @@ function($, _, tpl, kvtpl, filetpl, JQAJAXView, Query, QueryStorage, Request) {
             this.$el.on('click', '.ctrl-removepair', function() {
                 $(this).parent().parent().remove();
             });
+
+            this.$el.on('change', '.contenttype', function() {
+                if($(this).val() === 'other') {
+                    that.$el.find('.other-contenttype').show();
+                } else {
+                    that.$el.find('.other-contenttype').hide();
+                }
+            });
         },
 
         render: function() {
@@ -164,31 +172,47 @@ function($, _, tpl, kvtpl, filetpl, JQAJAXView, Query, QueryStorage, Request) {
                 });
             });
 
+            this.$el.find('.data-pair').each(function(){
+                dataPairs.push({
+                    key:   $(this).find('.data-key').val(),
+                    value: $(this).find('.data-value').val()
+                });
+            });
+
             this.query.set({
                 name:        this.$el.find('.savename').val(),
                 method:      this.$el.find('.method').val(),
                 url:         this.$el.find('.url').val(),
                 datatype:    this.$el.find('.datatype').val(),
                 rawdata:     this.$el.find('.rawdata').val(),
-                headers:     headerPairs
+                headers:     headerPairs,
+                data:        dataPairs
             });
 
             if(this.$el.find('.processdata').val() === 'true') {
-
                 this.query.set({processdata: true});
-
-                this.$el.find('.data-pair').each(function(){
-                    dataPairs.push({
-                        key:   $(this).find('.data-key').val(),
-                        value: $(this).find('.data-value').val()
-                    });
-                });
-
-                this.query.set({data: dataPairs});
-
             } else {
                 this.query.set({processdata: false});
+            }
 
+            switch(this.$el.find('.contenttype').val()) {
+                case 'false':
+                    this.query.set({contenttype: false});
+                    break;
+                case 'json':
+                    this.query.set({contenttype: 'application/json'});
+                    break;
+                case 'other':
+                    this.query.set({contenttype: this.$el.find('.other-contenttype').val()});
+                    break;
+                default:
+                    this.query.set({contenttype: 'default'});
+                    break;
+
+            }
+
+
+            if(this.$el.find('.data-files').length > 0) {
                 var myFormData = new FormData();
 
                 this.$el.find('.data-pair').each(function(){
@@ -205,8 +229,7 @@ function($, _, tpl, kvtpl, filetpl, JQAJAXView, Query, QueryStorage, Request) {
                     );
                 });
 
-                this.query.set({data: myFormData});
-                this.query.set({contenttype: false});
+                this.query.set({rawdata: myFormData});
             }
         },
 
