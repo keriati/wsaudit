@@ -208,12 +208,11 @@ function($, _, tpl, kvtpl, filetpl, JQAJAXView, Query, QueryStorage, Request) {
                 default:
                     this.query.set({contenttype: 'default'});
                     break;
-
             }
 
-
             if(this.$el.find('.data-files').length > 0) {
-                var myFormData = new FormData();
+                var myFormData = new FormData(),
+                    fileData = [];
 
                 this.$el.find('.data-pair').each(function(){
                     myFormData.append(
@@ -227,9 +226,17 @@ function($, _, tpl, kvtpl, filetpl, JQAJAXView, Query, QueryStorage, Request) {
                         $(this).find('.data-name').val(),
                         $(this).find('.data-file')[0].files[0]
                     );
+                    fileData.push({
+                        key:   $(this).find('.data-name').val(),
+                        value: ($(this).find('.data-file')[0].files[0]) ? $(this).find('.data-file')[0].files[0].name : ''
+                    });
                 });
 
                 this.query.set({rawdata: myFormData});
+                this.query.set({filedata: fileData});
+            } else {
+                this.query.set({rawdata: ''});
+                this.query.set({filedata: []});
             }
         },
 

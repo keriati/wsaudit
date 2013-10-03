@@ -18,8 +18,9 @@ function ($, _) {
 
             rawdata:     '',
 
-            headers: [],
-            data:    [],
+            filedata: [],
+            headers:  [],
+            data:     [],
 
             processdata: true
         };
