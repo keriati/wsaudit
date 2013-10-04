@@ -1,3 +1,4 @@
+/*global define*/
 define([
     'jquery',
     'underscore',
@@ -11,7 +12,7 @@ define([
 
     'draggable'
 ],
-function ($, _, tpl, Storage, QueryPanel, SettingsPanel) {
+function ($, _, tpl, QueryStorage, QueryPanel, SettingsPanel) {
     'use strict';
 
     function Panel(data) {
@@ -27,7 +28,7 @@ function ($, _, tpl, Storage, QueryPanel, SettingsPanel) {
         template : _.template(tpl),
 
         initialize: function() {
-            this.storage = new Storage();
+            this.storage = new QueryStorage();
 
             this.$el.draggable({stack: '.drag', handle: '.drag-handle'});
         },
@@ -60,7 +61,7 @@ function ($, _, tpl, Storage, QueryPanel, SettingsPanel) {
                 that.openQuery(parseInt($(e.target).parent().parent().attr('data-qid'), 10));
             });
 
-            this.$el.on('click', '.ctrl-open_settings', function(e) {
+            this.$el.on('click', '.ctrl-open_settings', function() {
                 that.openSettings();
             });
         },

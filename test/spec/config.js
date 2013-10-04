@@ -1,11 +1,12 @@
-/*global require*/
 require.config({
+    deps: ['runner'],
+
     shim: {
         underscore: {
             exports: '_'
         },
         draggable: {
-           deps: ['jquery']
+            deps: ['jquery']
         }
     },
 
@@ -14,19 +15,10 @@ require.config({
         tpl:        '../templates',
         jquery:     '../bower_components/jquery/jquery',
         underscore: '../bower_components/underscore/underscore',
-        draggable:  '../vendor/jquery-ui-1.10.3.custom'
-    }
-});
+        draggable:  '../vendor/jquery-ui-1.10.3.custom',
+        spec:       '../spec',
+        runner:     '../spec/runner'
+    },
 
-require(['jquery', 'app'], function ($, WSAudit) {
-    'use strict';
-
-    try {
-    var myWSAudit = new WSAudit();
-    } catch(e) {
-        console.log('Error!');
-        console.log(e);
-    }
-
-    $('.ctrl-add_query').trigger('click');
+    baseUrl: 'scripts'
 });

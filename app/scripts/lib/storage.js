@@ -1,4 +1,11 @@
-define(['underscore', 'lib/query'], function (_, Query) {
+/*global define*/
+define([
+    'jquery',
+    'underscore',
+
+    'lib/query'
+],
+function ($, _, Query) {
     'use strict';
 
     function Storage() {
@@ -58,7 +65,7 @@ define(['underscore', 'lib/query'], function (_, Query) {
 
         remove: function(id) {
             var rawqueries = this._getRaw(),
-                deleted;
+                deleted = null;
 
             var filtered = _.filter(rawqueries, function(data) {
                 if(data.id === id) {

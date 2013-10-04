@@ -1,3 +1,4 @@
+/*global define*/
 define(['views/panel'], function (Panel) {
     'use strict';
 

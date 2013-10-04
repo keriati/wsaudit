@@ -1,4 +1,21 @@
-define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html', 'lib/query', 'lib/storage', 'lib/runner', 'draggable'], function($, _, tpl, kvtpl, Query, Storage, Runner) {
+/*global define*/
+define([
+    'jquery',
+    'underscore',
+
+    'text!tpl/query.html',
+    'text!tpl/keyvalue.html',
+    'text!tpl/file.html',
+
+    'views/jqajax',
+
+    'lib/query',
+    'lib/storage',
+    'lib/request',
+
+    'draggable'
+],
+function($, _, tpl, kvtpl, filetpl, JQAJAXView, Query, QueryStorage, Request) {
     'use strict';
 
     function QueryPanel(query, options) {
@@ -15,6 +32,8 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
 
         templateKeyValuePair: _.template(kvtpl),
 
+        templateFile: _.template(filetpl),
+
         initialize: function(query) {
             if(query instanceof Query) {
                 this.query = query;
@@ -30,6 +49,10 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
 
             this.$el.on('click', '.ctrl-start', function(){
                 that.start();
+            });
+
+            this.$el.on('click', '.ctrl-gen_ajax', function(){
+                that.generateJQAJAX();
             });
 
             this.$el.on('click', '.ctrl-save_query', function(){
@@ -52,6 +75,14 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                 that.addKeyValuePair("", "", 'data');
             });
 
+            this.$el.on('click', '.ctrl-add_string', function(){
+                that.addKeyValuePair("", "", 'data');
+            });
+
+            this.$el.on('click', '.ctrl-add_file', function(){
+                that.addFile();
+            });
+
             this.$el.on('click', '.ctrl-add_header', function(){
                 that.addKeyValuePair("", "", 'header');
             });
@@ -60,13 +91,11 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                 $(this).parent().parent().remove();
             });
 
-            this.$el.on('change', '.processdata', function() {
-                if($(this).val() === 'true') {
-                    that.$el.find('.data-cont').show();
-                    that.$el.find('.rawdata-cont').hide();
-                } else {
-                    that.$el.find('.data-cont').hide();
-                    that.$el.find('.rawdata-cont').show();
+            this.$el.on('change', '.contenttype', function() {
+                if($(this).val() === 'other') {
+                    that.$el.find('.other-contenttype').show();
+                } else {
+                    that.$el.find('.other-contenttype').hide();
                 }
             });
         },
@@ -77,9 +106,9 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                 data;
 
             data = {
-                methods: methods,
-                datatypes: datatypes,
-                q: this.query.toJSON()
+                methods:   methods,
+                dataTypes: datatypes,
+                q:         this.query.toJSON()
             };
 
             this.$el.html(this.template(data));
@@ -97,22 +126,23 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
 
             this.updateQuery();
 
-            var myRunner = new Runner(this.query);
+            var myRequest = new Request(this.query);
 
-            myRunner
-                .run({
+            myRequest
+                .prepare({
                     success: function(data, textStatus, jqXHR) {
                         that.showResult(jqXHR, data, this);
                     },
-                    error: function(jqXHR,textStatus, errorThrown) {
+                    error: function(jqXHR) {
                         that.showResult(jqXHR, jqXHR.responseJSON, this);
                     }
-                });
+                })
+                .run();
         },
 
         showResult: function(jqXHR, data, ajax) {
-            var $houtput = this.$el.find('.output-headers'),
-                $doutput = this.$el.find('.output-data'),
+            var $houtput   = this.$el.find('.output-headers'),
+                $doutput   = this.$el.find('.output-data'),
                 statusball = (jqXHR.status === 200) ? '<span class="greenball"></span>' : '<span class="redball"></span>';
 
             $houtput.empty();
@@ -135,17 +165,17 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
             var dataPairs = [],
                 headerPairs = [];
 
-            this.$el.find('.data-pair').each(function(){
-                dataPairs.push({
-                    key:   $(this).find('.data-key').val(),
-                    value: $(this).find('.data-value').val()
-                });
-            });
-
             this.$el.find('.header-pair').each(function(){
                 headerPairs.push({
                     key:   $(this).find('.header-key').val(),
                     value: $(this).find('.header-value').val()
+                });
+            });
+
+            this.$el.find('.data-pair').each(function(){
+                dataPairs.push({
+                    key:   $(this).find('.data-key').val(),
+                    value: $(this).find('.data-value').val()
                 });
             });
 
@@ -155,13 +185,58 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                 url:         this.$el.find('.url').val(),
                 datatype:    this.$el.find('.datatype').val(),
                 rawdata:     this.$el.find('.rawdata').val(),
-                data:        dataPairs,
-                processdata: true,
-                headers:     headerPairs
+                headers:     headerPairs,
+                data:        dataPairs
             });
 
-            if(this.$el.find('.processdata').val() !== 'true') {
+            if(this.$el.find('.processdata').val() === 'true') {
+                this.query.set({processdata: true});
+            } else {
                 this.query.set({processdata: false});
+            }
+
+            switch(this.$el.find('.contenttype').val()) {
+                case 'false':
+                    this.query.set({contenttype: false});
+                    break;
+                case 'json':
+                    this.query.set({contenttype: 'application/json'});
+                    break;
+                case 'other':
+                    this.query.set({contenttype: this.$el.find('.other-contenttype').val()});
+                    break;
+                default:
+                    this.query.set({contenttype: 'default'});
+                    break;
+            }
+
+            if(this.$el.find('.data-files').length > 0) {
+                var myFormData = new FormData(),
+                    fileData = [];
+
+                this.$el.find('.data-pair').each(function(){
+                    myFormData.append(
+                        $(this).find('.data-key').val(),
+                        $(this).find('.data-value').val()
+                    );
+                });
+
+                this.$el.find('.data-files').each(function() {
+                    myFormData.append(
+                        $(this).find('.data-name').val(),
+                        $(this).find('.data-file')[0].files[0]
+                    );
+                    fileData.push({
+                        key:   $(this).find('.data-name').val(),
+                        value: ($(this).find('.data-file')[0].files[0]) ? $(this).find('.data-file')[0].files[0].name : ''
+                    });
+                });
+
+                this.query.set({rawdata: myFormData});
+                this.query.set({filedata: fileData});
+            } else {
+                this.query.set({rawdata: ''});
+                this.query.set({filedata: []});
             }
         },
 
@@ -177,12 +252,11 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
                     return;
                 }
 
-                this.$el.find('.savename').val(newName);
                 this.query.set('id', null);
                 this.query.set('name', newName);
             }
 
-            var myStorage = new Storage();
+            var myStorage = new QueryStorage();
 
             this.query = myStorage.save(this.query);
 
@@ -195,13 +269,28 @@ define(['jquery', 'underscore', 'text!tpl/query.html', 'text!tpl/keyvalue.html',
             this.$el.find('.' + type + '-list').append(tpl);
         },
 
+        addFile: function() {
+            var tpl = this.templateFile();
+            this.$el.find('.data-list').append(tpl);
+        },
+
+        generateJQAJAX: function() {
+            var that = this;
+
+            this.updateQuery();
+
+            var myJQAjaxView = new JQAJAXView({query: this.query});
+
+            myJQAjaxView.render().$el.appendTo('body');
+        },
+
         close: function() {
             this.$el.remove();
         },
 
         removeQuery: function() {
             if(window.confirm('Do you really want to remove this Query?')) {
-                var myStorage = new Storage();
+                var myStorage = new QueryStorage();
                 myStorage.remove(this.query.get('id'));
                 this.options.panel.$el.find('.ql-item-' + this.query.get('id')).remove();
                 this.close();

@@ -1,12 +1,17 @@
 {
-  "name": "wsaudit2",
-  "version": "1.0.0",
+  "name": "wsaudit",
+  "version": "2.1.0",
+  "authors": [
+    "Attila Kerekes <k.attila@gmail.com>"
+  ],
+  "description": "Webservice Auditor",
+  "license": "MIT",
+  "private": false,
   "dependencies": {
     "requirejs": "~2.1.8",
     "jquery": "~1.10.2",
     "underscore": "~1.5.2",
     "requirejs-text": "~2.0.10",
     "backbone": "~1.0.0"
-  },
-  "devDependencies": {}
+  }
 }

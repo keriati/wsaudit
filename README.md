@@ -1,17 +1,25 @@
-Webservice Auditor
-==================
+# Webservice Auditor
 
 This project aims to create a simple way to test and learn how json/jsonp webservices work.
 
+## Features
 
-Features
---------
+ - Create custom $.AJAX queries.
+ - Save your queries to localstorage or export them to json files.
+ - Duplicate calls (Save As).
+ - Load json configuration files with saved queries.
 
- - Create custom AJAX calls in a visual way
- - Save your ajax calls
- - Duplicate calls (Save As)
- - Download json configuration file with your saved ajax calls
- - Load json configuration file with saved ajax calls
+## Downloads
 
+Downlod the latest version here:
 
- This project is in heavy development.
+https://github.com/keriati/wsaudit/releases
+
+## Author
+
+**Attila Kerekes**
+
+ + [http://twitter.com/keriati](twitter.com/keriati)
+
+## Copyright and license
+
