@@ -32,17 +32,17 @@ define(['lib/query', 'lib/request', 'lib/printer'], function(Query, Request, Pri
 
                 var expected =
                     '$.ajax({' + '\n' +
-                    '  method: "post",' + '\n' +
-                    '  url: "http://test",' + '\n' +
-                    '  dataType: "json",' + '\n' +
-                    '  headers: {' + '\n' +
-                    '    foo: "bar"' + '\n' +
-                    '  },' + '\n' +
-                    '  timeout: 20000,' + '\n' +
-                    '  data: {' + '\n' +
-                    '    foo: "bar"' + '\n' +
-                    '  },' + '\n' +
+                    '  method: \'post\',' + '\n' +
+                    '  url: \'http://test\',' + '\n' +
+                    '  dataType: \'json\',' + '\n' +
                     '  processData: true,' + '\n' +
+                    '  timeout: 20000,' + '\n' +
+                    '  headers: {' + '\n' +
+                    '    foo: \'bar\'' + '\n' +
+                    '  },' + '\n' +
+                    '  data: {' + '\n' +
+                    '    foo: \'bar\'' + '\n' +
+                    '  },' + '\n' +
                     '  success: function(data, textStatus, jqXHR) {' + '\n' +
                     '    //Success Code here' + '\n' +
                     '  },' + '\n' +
@@ -54,6 +54,8 @@ define(['lib/query', 'lib/request', 'lib/printer'], function(Query, Request, Pri
                 var myPrintter = new Printer();
 
                 var result = myPrintter.makejqajax(myQuery);
+
+                console.log(result)
 
                 expect(result).to.equal(expected);
             });

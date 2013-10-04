@@ -17,7 +17,7 @@ define(['lib/request'], function(Request) {
 
             qString = qString.replace(/"([a-zA-Z_]*)":/gm, '$1:');
 
-            qString = qString.replace(/: "([a-zA-Z_]*)",/gm, ': \'$1\',');
+            qString = qString.replace(/: "(.*)"([,|\n]?)/gm, ': \'$1\'$2');
 
             qString = qString.replace(/^{/, '$.ajax({');
 
